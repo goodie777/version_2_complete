@@ -52,11 +52,11 @@ def main():
 
     # pack the data into the byte stream
     packet = bytes(data)
-
+    
     # connect to our socket 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(("127.0.0.1", 5555))
-
+    
     # user input send 
     while True:
         input("Press enter to send TC_101: ")
