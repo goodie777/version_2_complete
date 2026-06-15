@@ -51,8 +51,7 @@ def main():
     data = TC_101(101)
 
     # pack the data into the byte stream
-    packet = struct.pack('I', data.command_id)
-
+    packet = bytes(data)
 
     # connect to our socket 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,8 +60,6 @@ def main():
     # user input send 
     while True:
         input("Press enter to send TC_101: ")
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("127.0.0.1", 5555))
         s.sendall(packet)
         data = s.recv(sizeof(TM_201))
         tm = TM_201.from_buffer_copy(data)
@@ -70,7 +67,8 @@ def main():
         print("cpu_usage:", tm.cpu_usage)
         print("memory_usage:", tm.memory_usage)
         print("battery_level:", tm.battery_level)
-        s.close()
+    
+    s.close()
 
 if __name__ == "__main__":
     main()

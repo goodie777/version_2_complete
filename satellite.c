@@ -25,10 +25,9 @@ int main(void) {
         return -1;
     }
 
-    // ADD THESE TWO LINES
-    int opt = 1;
-    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
+    // // ADD THESE TWO LINES
+    // int opt = 1;
+    // setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
    
 
     //bind
@@ -45,24 +44,29 @@ int main(void) {
         return -1;
     }
 
+    int cfd = accept(fd, (struct sockaddr*)&clientInfo, &clientSize);
+    if (cfd == -1) { perror("accept"); }
+
     //accept
     while (1) {
-      int cfd = accept(fd, (struct sockaddr*)&clientInfo, &clientSize);
-      if (cfd == -1) { perror("accept"); }
+
+      // Receiving data 
       TC_101 telecommand = {0};
+      // Waiting for data
       recv(cfd, &telecommand, sizeof(telecommand), 0);
+      printf("Client says: %d\n", telecommand.command_id );
+
+      // Send the repsonse back to ground 
       TM_201 data4 = {201};
       data4.cpu_usage = 20.1;
       data4.memory_usage = 50.8;
       data4.battery_level = 90.8;
       send(cfd, &data4, sizeof(data4), 0);
-      printf("Client says: %d\n", telecommand.command_id );
-      close(cfd);
-      
-   }
 
-      return 0;
+    }
 
-
-
+    close(cfd);
+    
+    
+    return 0;
 }
