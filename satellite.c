@@ -49,6 +49,7 @@ int main(void) {
 
     int cfd = accept(fd, (struct sockaddr*)&clientInfo, &clientSize);
 
+    // Create the buffer just to read the data in, needs to be as large as our largest possible TC/TM we expect, right now we're asking for a load more 
     char buff[1024] = {0};
 
     //accept
@@ -61,18 +62,18 @@ int main(void) {
       // Read the 1024 bytes of data into the buffer, wait for the data
       ssize_t n = recv(cfd, (char *)buff, sizeof(buff), 0);
 
-// Kernel Socket Buffer
-// +---+---+---+---+
-// |101| 0 | 0 | 0 |
-// +---+---+---+---+
-//           |
-//           | copy
-//           v
-// Your Process Memory
-// buffer
-// +---+---+---+---+
-// |101| 0 | 0 | 0 |
-// +---+---+---+---+
+    // Kernel Socket Buffer
+    // +---+---+---+---+
+    // |101| 0 | 0 | 0 |
+    // +---+---+---+---+
+    //           |
+    //           | copy
+    //           v
+    // Your Process Memory
+    // buffer
+    // +---+---+---+---+
+    // |101| 0 | 0 | 0 |
+    // +---+---+---+---+
 
 
       buff[n]  = '\0'; // Null-terminate the buffer to make it a valid string
