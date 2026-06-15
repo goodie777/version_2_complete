@@ -24,8 +24,9 @@ int main(void) {
         perror("socket");
         return -1;
     }
-
-    // ADD THESE TWO LINES
+ 
+    // Enable address reuse so the server can rebind to port 5555
+    // without waiting for the OS to fully release the previous socket.
     int opt = 1;
     setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
