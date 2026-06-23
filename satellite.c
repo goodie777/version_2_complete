@@ -17,7 +17,7 @@ int main(void) {
     
     serverInfo.sin_family = AF_INET;
     serverInfo.sin_addr.s_addr = 0;
-    serverInfo.sin_port = htons(5555);
+    serverInfo.sin_port = htons(5001);
     
     int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd == -1) {
@@ -50,16 +50,24 @@ int main(void) {
     while (1) {
       int cfd = accept(fd, (struct sockaddr*)&clientInfo, &clientSize);
       if (cfd == -1) { perror("accept"); }
-      TC_101 telecommand = {0};
+      TC_102 telecommand = {0};
       recv(cfd, &telecommand, sizeof(telecommand), 0);
+      printf("Client says: %d\n", telecommand.command_id);
+      printf("Client says: %f\n", telecommand.DeltaVx);
+      printf("Client says: %f\n", telecommand.DeltaVy);
+      printf("Client says: %f\n", telecommand.DeltaVz);
+
+      
       TM_201 data4 = {201};
       data4.cpu_usage = 20.1;
       data4.memory_usage = 50.8;
       data4.battery_level = 90.8;
       send(cfd, &data4, sizeof(data4), 0);
+
+        
       printf("Client says: %d\n", telecommand.command_id );
       close(cfd);
-      
+
    }
 
       return 0;

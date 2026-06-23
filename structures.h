@@ -1,8 +1,10 @@
+//structures.h is filename 
+
 #include <stdint.h>
 
 
 typedef struct {
-    uint8_t command_id;
+    uint32_t command_id;
 } TC_101;
 
 typedef struct {

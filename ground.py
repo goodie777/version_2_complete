@@ -49,21 +49,25 @@ def prints():
 def main():
     # define our TC data
     data = TC_101(101)
+    data2 = TC_102(102, 1, 2, 3)
+    
 
     # pack the data into the byte stream
-    packet = struct.pack('I', data.command_id)
+    packet = bytes(data)
+    packet2 = bytes(data2)
 
 
     # connect to our socket 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(("127.0.0.1", 5555))
+    s.connect(("127.0.0.1", 5001))
 
     # user input send 
     while True:
         input("Press enter to send TC_101: ")
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("127.0.0.1", 5555))
-        s.sendall(packet)
+        s.connect(("127.0.0.1", 5001))
+        # s.sendall(packet)
+        s.sendall(packet2)
         data = s.recv(sizeof(TM_201))
         tm = TM_201.from_buffer_copy(data)
         print("status_code:", tm.status_code)
